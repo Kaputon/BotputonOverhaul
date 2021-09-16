@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 import os
-import boto3
 
 intents = discord.Intents.default()
 intents.members = True
@@ -23,5 +22,5 @@ async def on_ready():
         except Exception as e:
             print(e)
 
-TOKEN = boto3.resource('TOKEN')
+TOKEN = os.environ.get("TOKEN")
 bot.run(TOKEN)
