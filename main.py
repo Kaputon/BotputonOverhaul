@@ -22,5 +22,5 @@ async def on_ready():
         except Exception as e:
             print(e)
 
-token = ""
-bot.run(token)
+TOKEN = ""
+bot.run(TOKEN)
