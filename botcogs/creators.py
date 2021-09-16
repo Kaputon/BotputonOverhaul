@@ -60,7 +60,8 @@ class Creators(commands.Cog):
             map = str(tag.find('td', class_="server-list-col centered-text map-cover").text).strip("\n")
             area = str(tag.find('td', class_="server-list-col centered-text",
                                 style="padding: 0 1rem")).split("|")
-            area = [are for are in area if are in AREAS][0]
+            area = [location for location in area if location.strip() in AREAS]
+            area = area[0]
 
             code = tag.find('td', class_="server-list-col flex")
             if code:
