@@ -15,7 +15,7 @@ class Creators(commands.Cog):
 
     @commands.command()
     async def creators(self, ctx):
-        players, map, connect_line, area = None, None, None, None # Prepare the four variables we will put in the embed.
+        players, map, connect_line, area = None, None, None, "Creators.TF" # Prepare the four variables we will put in the embed.
 
         server_list = [] # List to hold each server as we iterate through available ones.
       
@@ -52,7 +52,8 @@ class Creators(commands.Cog):
 
     def getimportant(self, tag):
         players, map, connect_line, area = 0, "NA", "NA", "NA" # Initialize the variables in case of failure.
-        AREAS = ["West EU", "East US", "West US", "Australia", "Singapore", "Germany", "Seattle", "Poland"] # List of areas.
+        AREAS = ["West EU", "East US", "West US", "Australia", "Singapore", "Germany", "Seattle", "Poland",
+                 "Balancemod.TF", "Silly", "" ] # List of areas.
         try:
             players = str(tag.find('label', class_="players-online").text).strip("\n") # Grab the players
 
