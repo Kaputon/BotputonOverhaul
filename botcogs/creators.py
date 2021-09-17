@@ -61,8 +61,7 @@ class Creators(commands.Cog):
                 return None
 
             map = str(tag.find('td', class_="server-list-col centered-text map-cover").text).strip("\n") # Grab the map.
-            area = str(tag.find('td', class_="server-list-col centered-text",
-                                style="padding: 0 1rem")).split("|") # Split the main text row by the '|' symbol
+            area = str(tag.find('td', class_="server-list-col centered-text")).split("|") # Split the main text row by the '|' symbol
             
             area = [location for location in area if location.strip() in AREAS][0] # Iterate through each element, if it is in the list of areas, keep it.
                                                                                    # Then choose the first element, as there should only be one.
