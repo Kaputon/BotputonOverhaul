@@ -30,7 +30,7 @@ class Leaderboard(commands.Cog):
         for key, value in sorted(members.items(), key=lambda z: z[1], reverse=True): # Iterate through a dictionary sorted by the members values.
             if x == 1: # If this member is the top poster, set the top variable to his avatar for future thumbnail usage.
                 top = str(self.bot.get_user(value[1]).avatar_url)
-            if x >= 10: # Break the loop at 10 users. 
+            if x >= 11: # Break the loop at 10 users. 
                 break
             embed.add_field(name=str(x) + f". {key}",
                             value=f"{value[0]} posts",
