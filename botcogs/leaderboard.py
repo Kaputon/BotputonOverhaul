@@ -27,7 +27,7 @@ class Leaderboard(commands.Cog):
         embed.set_footer(text="Bots excluded.", icon_url=self.bot.user.avatar_url)
         x = 1
         top = None
-        for key, value in sorted(members.items(), key=lambda z: members.values(), reverse=True): # Iterate through a dictionary sorted by the members values.
+        for key, value in sorted(members.items(), key=lambda z: z[1], reverse=True): # Iterate through a dictionary sorted by the members values.
             if x == 1: # If this member is the top poster, set the top variable to his avatar for future thumbnail usage.
                 top = str(self.bot.get_user(value[1]).avatar_url)
             if x >= 10: # Break the loop at 10 users. 
