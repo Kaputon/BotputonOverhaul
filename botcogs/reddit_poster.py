@@ -4,6 +4,8 @@ from time import time as tick
 import asyncpraw
 import os
 from asyncio import sleep
+import pymongo
+
 
 WAIT_TIME = 5
 
@@ -14,16 +16,21 @@ class RedditPost(commands.Cog):
         self.ID = os.environ.get("reddit_id")
         self.SECRET = os.environ.get("reddit_secret")
         self.AGENT = os.environ.get("reddit_agent")
+        self.URL = os.environ.get("URLstring")
         self.PREV_POSTS = []
         self.POST_WAIT = 3600 * 4  # 4 hours
-        self.PREV_C_ID = 888704383305515029
-        self.JSON_ID = 888709799338975293
+        #self.PREV_C_ID = 888704383305515029
+        #self.JSON_ID = 888709799338975293
         self.thumb = "https://cdn.discordapp.com/attachments/389514146053488671/831620871210795079/reddit-logo-16.png"
+        self.cluster = pymongo.MongoClient(self.URL)
+        self.db = self.cluster["Botputon-Data"]
+        self.collection = self.db["RedditData"]
+
         self.gatherPost.start()
 
     # Grab the timestamp of the previous post, if has been four hours since the last post, return True for preparing the post.
-    async def checkStamp(self, channel):
-        timestamp = [float(str(mess.content).split(" ")[1]) async for mess in channel.history(limit=1)][0]
+    async def checkStamp(self, stamp):
+        timestamp = stamp["last-tick"]  #[float(str(mess.content).split(" ")[1]) async for mess in channel.history(limit=1)][0]
 
         if abs(timestamp - tick()) >= self.POST_WAIT:
             return True
@@ -42,19 +49,24 @@ class RedditPost(commands.Cog):
     @tasks.loop(seconds=5)
     async def gatherPost(self):
 
-        json = self.bot.get_channel(self.JSON_ID)
+
+
+        LTICK = self.collection.find_one({"last-tick": {"$exists" : True} })
+        POST_CHANNEL = self.bot.get_channel(int(LTICK["target-channel"]))
+
+
+        #json = self.bot.get_channel(self.JSON_ID)
 
         # Get the ID of the channel we will post the link to.
-        POST_CHANNEL = self.bot.get_channel(
-            [int(str(ID.content).split(" ")[1]) async for ID in json.history(limit=1)][0]
-        )
+        #POST_CHANNEL = self.bot.get_channel([int(str(ID.content).split(" ")[1]) async for ID in json.history(limit=1)][0])
 
-        # Storage for all the previous Reddit posts. Poverty persistent data.
-        PREV_CHANNEL = self.bot.get_channel(self.PREV_C_ID)
+        self.PREV_POSTS = self.collection.find_one({"previous-posts" : {"$exists" : True}})["previous-posts"]
 
-        # If the PREV_POSTS list does not contain anything, then gather up the PREV_CHANNEL urls.
-        if len(self.PREV_POSTS) < 1:
-            self.PREV_POSTS = [str(mess.content).split(" ")[0] async for mess in PREV_CHANNEL.history(limit=None)]
+        #PREV_CHANNEL = self.bot.get_channel(self.PREV_C_ID)
+
+
+        #if len(self.PREV_POSTS) < 1:
+         #  self.PREV_POSTS2 = [str(mess.content).split(" ")[0] async for mess in PREV_CHANNEL.history(limit=None)]
 
         post_dict = {
             "Upvotes": [],
@@ -71,7 +83,7 @@ class RedditPost(commands.Cog):
         )
         sub = await redditAPI.subreddit("truetf2")
 
-        if await self.checkStamp(PREV_CHANNEL) == True:
+        if await self.checkStamp(LTICK) == True:
             async for post in sub.hot(limit=30):
                 if not await self.checkPost(post):
                     continue
@@ -86,8 +98,8 @@ class RedditPost(commands.Cog):
                 max(post_dict["Upvotes"])
             )
 
-            self.PREV_POSTS.append(str(post_dict["Url"][CHOSE_POST]))
-            await PREV_CHANNEL.send(post_dict["Url"][CHOSE_POST] + f" {tick()}")
+            self.collection.update_one(self.PREV_POSTS, {"$push" : {"previous-posts" : f"{str(post_dict['Url'][CHOSE_POST])}"}})
+            #await PREV_CHANNEL.send(post_dict["Url"][CHOSE_POST] + f" {tick()}")
 
             nEmbed = discord.Embed(title=post_dict["Post Title"][CHOSE_POST],
                                    description=str(post_dict["Content"][CHOSE_POST])[:509] + "...")
