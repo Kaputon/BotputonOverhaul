@@ -104,11 +104,11 @@ class RedditPost(commands.Cog):
             global WAIT_TIME
             WAIT_TIME = self.POST_WAIT
             await redditAPI.close()
-            await self.cluster.close()
+            self.cluster.close()
             await sleep(WAIT_TIME)
         else:
             await redditAPI.close()
-            await self.cluster.close()
+            self.cluster.close()
             print("Hibernating.")
             await sleep(WAIT_TIME)
 
