@@ -31,7 +31,8 @@ class RedditPost(commands.Cog):
     # Grab the timestamp of the previous post, if has been four hours since the last post, return True for preparing the post.
     async def checkStamp(self, stamp):
         timestamp = stamp["last-tick"]  #[float(str(mess.content).split(" ")[1]) async for mess in channel.history(limit=1)][0]
-
+        print(timestamp)
+        
         if abs(timestamp - tick()) >= self.POST_WAIT:
             return True
         else: # Otherwise, set the WAIT_TIME variable to the amount of time until the next post is ready.
