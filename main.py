@@ -73,6 +73,7 @@ async def on_message(ctx):
     if playerdat.find_one(SERV_FILT):
         print("Found")
         playerdat.update_one(USER_FILT, {"$inc" : {g_ID : 1} } )
+    await bot.process_commands(message)
 
 
 @tasks.loop(seconds=300) # 5 minutes
