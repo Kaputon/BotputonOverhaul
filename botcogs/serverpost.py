@@ -8,7 +8,7 @@ class ServerPost(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def serverp(self, ctx):
+    async def serverpost(self, ctx):
 
         g_ID = ctx.guild.id
         mongClient = MongoHandler.ClientMongo()
