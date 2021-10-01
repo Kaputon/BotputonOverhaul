@@ -50,7 +50,7 @@ class Creators(commands.Cog):
 
     def getimportant(self, tag):
         players, map, connect_line, area = 0, "NA", "NA", "Creators.TF"
-        AREAS = ["West EU", "EU", "East US", "West US", "Australia", "Singapore", "Germany", "Seattle", "Poland",
+        AREAS = ["Central NA", "West NA" , "West EU", "EU", "East US", "West US", "Australia", "Singapore", "Germany", "Seattle", "Poland",
                  "Events Silly Servers", "Balancemod.TF"]
         try:
             players = str(tag.find('label', class_="players-online").text).strip("\n")
