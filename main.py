@@ -41,7 +41,7 @@ async def on_message(ctx):
     mongClient.handleUser(information[0][0] ,information[1])
     #----]
     
-    whitelist = ["kaputon", "puton", "kap", "connor", "condor", "clonker", "con",
+    whitelist = ["kaputon", "puton", "kap", "connor", "condor", "clonker",
                  "<@!165980253246717953>"]
     user = bot.get_user(165980253246717953)
     
