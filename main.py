@@ -47,12 +47,16 @@ async def on_message(ctx):
     
     # If this message is not in a DM and the author isn't a bot. See if my name is mentioned.
     # If so, message me.
+    div = ":white_small_square: :white_small_square: :white_small_square: :white_small_square:"
+
     if not (ctx.guild is None) and not (ctx.author is bot):
         for word in whitelist:
             if bool(re.search(word, str(ctx.content))):
-                await user.send(f"**{ctx.author}** in *{ctx.guild}* :\n"
-                                f"```'{ctx.content}'```\n"
-                                f"{ctx.jump_url}")
+                await user.send(f"{div}\n"
+                                f":bust_in_silhouette: **{ctx.author}** in *{ctx.guild}* :\n"
+                                f":speech_left: *'{ctx.content}'*\n"
+                                f":link: {ctx.jump_url}\n"
+                                f"{div}")
                 break
     #-----]
 
