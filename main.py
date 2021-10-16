@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import os
+import re
 import MongoHandler as mongoH
 
 intents = discord.Intents.default()
