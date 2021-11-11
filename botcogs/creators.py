@@ -63,7 +63,7 @@ class Creators(commands.Cog):
                                 style="padding: 0 1rem").text).split("|")
             area = [location for location in area if location.strip().replace(" #1", "").replace(" #2", "").replace(" #3", "").replace(" #4", "") in AREAS][0]
 
-            code = tag.find('td', class_="server-list-col flex")
+            code = tag.find('td', class_="server-list-col flex center")
             if code:
                 try:
                     connect_line = str(code.find('a')['href']).strip("\n")
